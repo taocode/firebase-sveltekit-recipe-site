@@ -1,20 +1,20 @@
-import type firebase from "firebase/app";
+import type Firestore from "firebase/firestore";
 
-let db: firebase.firestore.Firestore = null;
+let db: Firestore.Firestore = null;
 
-export async function firestore(): Promise<firebase.firestore.Firestore> {
+export async function firestore(): Promise<Firestore.Firestore> {
   if (db) {
     return db;
   }
 
   // Checks for the client
   if (typeof window !== "undefined") {
-    const fb: any = (await import("firebase/app")).default;
+    const fb: any = (await import("firebase/app"));
 
     db = fb.firestore();
     return db;
   }
 
-  const fb: any = await import("firebase");
-  return fb.apps[0].firestore() as firebase.firestore.Firestore;
+  const fb: any = await import("firebase/app");
+  return fb.getApps()[0].firestore() as firebase.firestore.Firestore;
 }

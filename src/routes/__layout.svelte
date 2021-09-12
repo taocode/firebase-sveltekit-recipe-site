@@ -12,12 +12,13 @@
 <script lang="ts">
   import { Container } from "sveltestrap";
   import firebase from "firebase/app";
-  import "firebase/auth";
+  import { getAuth, onAuthStateChanged } from "firebase/auth";
   import { onMount } from "svelte";
   import authStore from "../stores/authStore";
 
   onMount(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    const auth = getAuth(firebaseApp)
+    onAuthStateChanged(auth,(user) => {
       authStore.set({
         isLoggedIn: user !== null,
         user,
